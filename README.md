@@ -79,6 +79,11 @@ We welcome contributions from the community! Here’s how you can contribute:
    git push origin feature-name
    ```
 6. **Submit a Pull Request**: Go to the original repository and click "New Pull Request".
+7. ## License
+
+SummarEase © 2024 by Rushab Rasik Karania is licensed under CC BY-NC-SA 4.0.
+To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-sa/4.0/
+
 
 Please ensure your contributions align with the project’s style and include tests for any new features.
 
