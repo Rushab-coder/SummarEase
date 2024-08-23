@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SummarEase</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Existing CSS and Font links -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+   
+
+    <style>
+        /* Define CSS Variables for Light and Dark Mode */
+        :root {
+            --background-color: #ffffff;
+            --text-color: #333;
+            --container-background: #ffffff;
+            --button-background: #00796b;
+            --tooltip-background: #555;
+            --tooltip-color: #fff;
+            --divider-color: #b2ebf2;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: auto;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-y: auto;
+            position: relative;
+        }
+        /* Note Overlay Styling */
+/* Note Overlay Styling */
+.note-overlay {
+    position: fixed;
+    top: 10%; /* Position closer to the top */
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #e0f7fa; /* Light teal color */
+    color: #00796b; /* Dark teal for text */
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    z-index: 1100; /* Higher than other elements */
+    text-align: center;
+    font-size: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+/* Show the note overlay */
+.note-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+        /* Background Elements */
+        .background-shapes {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #00796b, #004d40);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .background-shapes2 {
+            position: absolute;
+            bottom: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #80deea, #4dd0e1);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Improved Intro Overlay */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #004d40, #002f2b);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+            animation: fadeOutSlide 1.5s ease-in-out 4s forwards;
+            text-align: center;
+            padding: 0 20px;
+            overflow: hidden;
+        }
+
+        .intro-overlay::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,77,64,0.6) 0%, rgba(0,77,64,0) 70%);
+            animation: pulse 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .intro-overlay img {
+            width: 180px;
+            margin-bottom: 20px;
+            animation: zoomInRotate 2s ease-in-out;
+            z-index: 2;
+        }
+
+        @keyframes zoomInRotate {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(360deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(720deg);
+                opacity: 1;
+            }
+        }
+
+        .intro-overlay h1 {
+            font-size: 2.5em;
+            margin: 0;
+            animation: fadeInText 1.5s ease-in-out 1s forwards;
+            z-index: 2;
+        }
+
+        .intro-overlay p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+            text-align: center;
+            animation: fadeInTextStaggered 1s ease-in-out 2s forwards;
+            z-index: 2;
+        }
+
+        .intro-overlay .description {
+            font-size: 1em;
+            line-height: 1.6;
+            margin-top: 15px;
+            max-width: 800px;
+            animation: fadeInTextStaggered 1s ease-in-out 3s forwards;
+            z-index: 2;
+        }
+
+        @keyframes fadeOutSlide {
+            to {
+                opacity: 0;
+                transform: translateY(-100%);
+                visibility: hidden;
+            }
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInTextStaggered {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Content */
+/* Adjust the spacing at the top of the container */
+    .container {
+        width: 90%;
+        max-width: 600px;
+        background: var(--container-background);
+        padding: 40px;
+        padding-top: 60px; /* Increase padding at the top */
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        box-sizing: border-box;
+        animation: fadeInUpScale 1.5s ease-in-out;
+        position: relative;
+        z-index: 1;
+        overflow: visible;
+        margin-top: 40px; /* Add margin at the top */
+    }
+
+    .container:hover {
+        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+    }
+
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle i {
+            font-size: 1.5em;
+            color: var(--text-color);
+        }
+
+        img.logo {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: #00695c;
+        }
+
+        h2 {
+            font-size: 1.2em;
+            color: #00796b;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        /* Divider */
+        .divider {
+            height: 2px;
+            background: var(--divider-color);
+            margin: 20px 0;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Radio Group with Icons */
+        .radio-group {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            background-color: #e0f7fa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid transparent;
+        }
+
+        .radio-group label:hover {
+            background-color: #b2ebf2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid #00796b;
+        }
+
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+
+        .radio-group input[type="radio"]:checked + label {
+            background-color: #00796b;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 121, 107, 0.4);
+            border: 1px solid #004d40;
+        }
+
+        .radio-group label i {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border: 2px solid #80deea;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            display: none;
+            background-color: #f1f8e9;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #00796b;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 150, 136, 0.2);
+        }
+
+        textarea {
+            height: 200px;
+            display: none;
+        }
+
+        /* Improved Button Styles with Icons */
+        button {
+            width: 100%;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border: 2px solid #00796b;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #004d40, #00796b);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #002f2b, #004d40);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: scale(0.98);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Updated Icons */
+        button i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        #summary {
+            position: relative;
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #80deea;
+            border-radius: 10px;
+            background: #e0f7fa;
+            font-size: 16px;
+            text-align: left;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+            animation: fadeInUp 1s ease-in-out;
+            display: none; /* Hide initially */
+        }
+
+        #summaryText {
+            margin: 0; /* Remove any default margin */
+            padding: 0; /* Remove any default padding */
+            display: block; /* Ensure the span takes up the full width */
+        }
+
+        .copy-icon {
+            position: absolute;
+            bottom: 10px; /* Position at the bottom */
+            right: 10px; /* Position at the right */
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #00796b;
+            transition: color 0.3s;
+            display: none; /* Hide initially */
+        }
+
+        .copy-icon:hover {
+            color: #004d40;
+        }
+
+        #loading {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #00796b;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #00796b;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUpScale {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Tooltip Style */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: var(--tooltip-background);
+            color: var(--tooltip-color);
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            --background-color: #121212;
+            --text-color: #e0e0e0;
+            --container-background: #1c1c1c;
+            --button-background: #4caf50;
+            --tooltip-background: #333333;
+            --tooltip-color: #ddd;
+            --divider-color: #333333;
+        }
+
+        body.dark-mode h1 {
+            color: #66bb6a;
+        }
+
+        body.dark-mode h2,
+        body.dark-mode .description {
+            color: #a5d6a7;
+        }
+
+        body.dark-mode .radio-group label {
+            color: #e0e0e0;
+            background-color: #2c2c2c;
+        }
+
+        body.dark-mode .radio-group label:hover {
+            background-color: #3a3a3a;
+        }
+
+        body.dark-mode .radio-group input[type="radio"]:checked + label {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode textarea {
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            border-color: #4caf50;
+        }
+
+        body.dark-mode input[type="text"]::placeholder,
+        body.dark-mode textarea::placeholder {
+            color: #888;
+        }
+
+        body.dark-mode #summary {
+            background-color: #1c1c1c;
+            color: #e0e0e0;
+            border-color: #4caf50;
+        }
+
+        body.dark-mode button {
+            background-color: #4caf50;
+            color: #121212;
+        }
+
+        body.dark-mode button:hover {
+            background: linear-gradient(135deg, #43a047, #388e3c);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* General Improvements */
+        .container {
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .radio-group label {
+            padding: 12px 20px;
+        }
+
+        button {
+            font-size: 18px;
+        }
+
+        #summary {
+            font-size: 16px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Responsive Design */
+        /* Responsive Design */
+        @media (max-width: 768px) {
+        body {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 90%; /* Reduce width slightly to prevent buttons from going off-screen */
+            max-width: 100%;
+            padding: 15px;
+            margin: 15px auto;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        input[type="text"],
+        textarea {
+            font-size: 14px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 14px;
+            width: 90%; /* Ensure buttons don't go off-screen */
+            box-sizing: border-box;
+        }
+
+        #summary {
+            font-size: 14px;
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .radio-group {
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .radio-group label {
+            width: 90%;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-size: 14px; /* Make text size slightly smaller */
+        }
+
+        .background-shapes {
+            display: none;
+        }
+
+        .background-shapes2 {
+            display: none;
+        }
+
+        .theme-toggle {
+            top: 10px;
+            right: 10px;
+        }
+
+        .intro-overlay {
+            padding: 10px;
+        }
+
+        .intro-overlay h1 {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .intro-overlay p,
+        .intro-overlay .description {
+            font-size: 0.9em; /* Reduce font size slightly */
+            text-align: center;
+            padding: 0 10px; /* Add padding to prevent text from being cut off */
+            word-wrap: break-word; /* Ensure long words wrap properly */
+            box-sizing: border-box;
+        }
+
+        .footer {
+            font-size: 12px;
+        }
+    }
+    @media (max-width: 768px) {
+    .intro-overlay {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Ensure the overlay takes up full viewport height */
+        box-sizing: border-box;
+    }
+
+    .intro-overlay img {
+        width: 140px; /* Slightly reduce logo size */
+        margin-bottom: 15px; /* Adjust margin for better spacing */
+    }
+
+    .intro-overlay h1 {
+        font-size: 1.5em;
+        text-align: center;
+        margin-bottom: 10px; /* Adjust margin for better spacing */
+    }
+
+    .intro-overlay p,
+    .intro-overlay .description {
+        font-size: 0.9em; /* Adjust font size for mobile */
+        text-align: center;
+        padding: 0 15px; /* Ensure padding to prevent text from being cut off */
+        margin: 0 auto; /* Center align text block */
+    }
+}
+
+
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="intro-overlay">
+        <img src="logo.png" alt="SummarEase Logo">
+        <h1>SummarEase</h1>
+        <p>Your Smart Text Summarizer</p>
+        <p class="description">Effortlessly condense long articles, papers, and content into concise summaries with SummarEase, the intelligent summarization tool designed to save you time and enhance your reading experience.</p>
+    </div>
+
+    <div class="background-shapes"></div>
+    <div class="background-shapes2"></div>
+
+    <div class="container">
+        <!-- Dark Mode Toggle with Icon -->
+        <div class="theme-toggle">
+            <i class="fas fa-moon" id="themeIcon"></i>
+            <input type="checkbox" id="darkModeToggle" style="display: none;">
+        </div>
+        <img src="logo.png" alt="SummarEase Logo" class="logo">
+        <h1>SummarEase</h1>
+        <div class="divider"></div>
+        <div class="radio-group">
+            <input type="radio" id="urlOption" name="inputType" value="url" onclick="toggleInput('url')" checked>
+            <label for="urlOption" class="tooltip"><i class="fas fa-link"></i> Enter URL
+                <span class="tooltiptext">Provide a link to summarize</span>
+            </label>
+            
+            <input type="radio" id="textOption" name="inputType" value="text" onclick="toggleInput('text')">
+            <label for="textOption" class="tooltip"><i class="fas fa-file-alt"></i> Copy-Paste Text
+                <span class="tooltiptext">Paste text to summarize</span>
+            </label>
+        </div>
+        <input type="text" id="inputURL" placeholder="Enter URL here...">
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+        <button onclick="summarizeContent()" id="summarizeButton"><i class="fas fa-align-justify"></i> Summarize</button>
+        <div id="loading" class="loading-spinner"></div>
+        <div id="summary">
+            <i class="fas fa-copy copy-icon" onclick="copySummary()"></i>
+            <span id="summaryText"></span>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2024 SummarEase. All Rights Reserved.
+    </div>
+
+    <script>
+        // Dark Mode Toggle Script
+        const toggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const themeIcon = document.getElementById('themeIcon');
+
+        themeIcon.addEventListener('click', () => {
+            toggle.checked = !toggle.checked;
+            toggle.dispatchEvent(new Event('change'));
+        });
+
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                body.classList.add('dark-mode');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Load saved theme
+        window.addEventListener('load', () => {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                toggle.checked = true;
+                body.classList.add('dark-mode');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        // Toggle input fields based on selected option
+        function toggleInput(type) {
+            document.getElementById('inputURL').style.display = (type === 'url') ? 'block' : 'none';
+            document.getElementById('inputText').style.display = (type === 'text') ? 'block' : 'none';
+            localStorage.setItem('selectedInputType', type);
+        }
+
+        // Save selected input type on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectedOption = localStorage.getItem('selectedInputType') || 'url';
+            document.querySelector(`input[value="${selectedOption}"]`).checked = true;
+            toggleInput(selectedOption);
+        });
+
+        // Summarize content and show loading spinner
+        async function summarizeContent() {
+            const url = document.getElementById('inputURL').value;
+            const text = document.getElementById('inputText').value;
+            const button = document.getElementById('summarizeButton');
+            const loading = document.getElementById('loading');
+            const summaryDiv = document.getElementById('summary');
+            const summaryText = document.getElementById('summaryText');
+            const copyIcon = document.querySelector('.copy-icon'); // Select the copy icon
+
+            // Clear previous summary and show loading
+            summaryDiv.style.display = 'none';
+            summaryText.innerText = '';
+            loading.style.display = 'block';
+            button.disabled = true;
+            copyIcon.style.display = 'none'; // Hide the icon initially
+
+            try {
+                const response = await fetch('http://localhost:5000/summarize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url, text: text })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    summaryText.innerText = data.summary;
+                    summaryDiv.style.display = 'block';
+                    copyIcon.style.display = 'block'; // Show the copy icon
+                    document.body.style.overflowY = 'auto'; // Ensure scrolling is enabled
+                } else {
+                    summaryText.innerText = 'Error: ' + (data.error || 'An error occurred');
+                    summaryDiv.style.display = 'block';
+                }
+            } catch (error) {
+                summaryText.innerText = 'Error: ' + error.message;
+                summaryDiv.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+                button.disabled = false;
+            }
+        }
+
+        window.addEventListener('load', () => {
+    // Display the note overlay after the intro overlay fades out
+    setTimeout(() => {
+        const noteOverlay = document.createElement('div');
+        noteOverlay.className = 'note-overlay';
+        noteOverlay.innerText = 'Note: While SummarEase strives to provide accurate summaries, it may sometimes make mistakes. Please review important information carefully.';
+        document.body.appendChild(noteOverlay);
+
+        // Show the note overlay
+        setTimeout(() => {
+            noteOverlay.classList.add('show');
+        }, 500); // Small delay to ensure it's added to the DOM
+
+        // Hide the note overlay after 3 seconds
+        setTimeout(() => {
+            noteOverlay.classList.remove('show');
+
+            // Remove it from the DOM after the transition
+            setTimeout(() => {
+                noteOverlay.remove();
+            }, 500); // Wait for the fade-out transition to complete
+        }, 5500); // Display the note for 3 seconds
+    }, 5000); // Wait for the intro overlay to finish
+});
+
+        // Copy summary to clipboard
+        function copySummary() {
+            const summaryText = document.getElementById('summaryText').innerText;
+            navigator.clipboard.writeText(summaryText).then(() => {
+                alert('Summary copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy summary: ', err);
+            });
+        }
+
+        // Automatically hide the intro overlay after 5 seconds
+        setTimeout(() => {
+            document.querySelector('.intro-overlay').style.display = 'none';
+            document.body.style.overflowY = 'auto'; // Re-enable scrolling
+        }, 5000);
+
+    </script>
+</body>
+</html>
