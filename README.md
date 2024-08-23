@@ -82,6 +82,6 @@ We welcome contributions from the community! Here’s how you can contribute:
 
 Please ensure your contributions align with the project’s style and include tests for any new features.
 
-## License
+
 
 
