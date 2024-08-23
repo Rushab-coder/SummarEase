@@ -80,12 +80,14 @@ We welcome contributions from the community! Here’s how you can contribute:
    ```
 6. **Submit a Pull Request**: Go to the original repository and click "New Pull Request".
 7. ## License
+## License
 
-SummarEase © 2024 by Rushab Rasik Karania is licensed under CC BY-NC-SA 4.0.
-To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-sa/4.0/
+SummarEase is licensed under the GNU General Public License v3.0. 
 
+This means that you are free to use, modify, and distribute the software as long as any derivative works or copies you distribute also fall under the same license. 
 
-Please ensure your contributions align with the project’s style and include tests for any new features.
+To view a copy of this license, visit [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
+
 
 
 
