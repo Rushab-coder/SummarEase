@@ -2,6 +2,7 @@
 
 **SummarEase** is a text summarization tool that leverages a T5 small base model fine-tuned on the CNN dataset. This tool is designed to provide concise and accurate summaries of large bodies of text, making it easier to digest and understand key points quickly.
 
+##
 ## Features
 
 - **Accurate Summarization**: Provides concise summaries of long texts using state-of-the-art NLP techniques.
@@ -9,6 +10,7 @@
 - **User-Friendly Interface**: An intuitive frontend that allows users to easily input text or URLs and receive summaries.
 - **Customizable**: The project is open-source, allowing contributors to modify and enhance its capabilities.
 
+##
 ## Installation
 
 ### 1. Clone the Repository
@@ -43,7 +45,7 @@ Open your web browser and go to:
 ```
 http://127.0.0.1:5000/
 ```
-
+##
 ## Usage
 
 ### Text Summarization
@@ -79,7 +81,9 @@ We welcome contributions from the community! Here’s how you can contribute:
    git push origin feature-name
    ```
 6. **Submit a Pull Request**: Go to the original repository and click "New Pull Request".
-7. ## License
+
+##
+## License
 
 SummarEase © 2024 by Rushab Rasik Karania is licensed under CC BY-NC-SA 4.0.
 
